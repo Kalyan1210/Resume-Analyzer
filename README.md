@@ -14,3 +14,7 @@ This Streamlit app lets you upload a resume (PDF) and match it against any job d
 ## How to Run
 
 1. Create `.env` file with your OpenRouter API key:
+
+2. Install dependencies:
+
+3. Run the app:
