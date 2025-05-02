@@ -1,0 +1,7 @@
+streamlit
+pymupdf
+requests
+python-dotenv
+matplotlib
+plotly
+pandas
