@@ -9,8 +9,27 @@ import pandas as pd
 import re
 
 # Load API key from .env file
-load_dotenv()
-API_KEY = os.getenv("OPENROUTER_API_KEY")
+OPENROUTER_API_KEY = st.secrets.get("OPENROUTER_API_KEY") or os.getenv("OPENROUTER_API_KEY")
+APP_URL = st.secrets.get("APP_URL", "")
+APP_TITLE = st.secrets.get("APP_TITLE", "Resume Analyzer")
+
+if not OPENROUTER_API_KEY:
+    with st.sidebar:
+        st.info("Enter your OpenRouter key to run locally or on forks.")
+        user_key = st.text_input("OpenRouter API key", type="password")
+        if user_key:
+            OPENROUTER_API_KEY = user_key
+
+if not OPENROUTER_API_KEY:
+    st.warning("No API key found. Add it in Streamlit Secrets or enter your own in the sidebar.")
+    st.stop()
+
+def openrouter_headers():
+    return {
+        "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+        "HTTP-Referer": APP_URL,      # helps with OpenRouter analytics
+        "X-Title": APP_TITLE
+    }
 
 # --- Extract Resume Text from PDF ---
 def extract_text_from_pdf(uploaded_file):
